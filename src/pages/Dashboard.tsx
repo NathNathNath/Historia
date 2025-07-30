@@ -202,124 +202,116 @@ export default function Dashboard() {
         </div>
 
         {/* Todolist */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6 flex flex-col">
+        <div className="rounded-2xl p-6 flex flex-col shadow-xl bg-gradient-to-br from-purple-100 via-indigo-100 to-pink-100 border border-purple-200/40 relative">
           <div className="flex items-center mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-3">
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
             </div>
-            <h2 className="text-xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              To-Do List
-            </h2>
+            <h2 className="text-lg font-bold text-purple-700">To-Do List</h2>
           </div>
-          
-          <div className="flex mb-6">
+          <div className="flex mb-5 gap-2">
             <Input
               type="text"
-              className="flex-1 border border-gray-300 rounded-l-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm"
+              className="flex-1 rounded-xl border-0 bg-white/80 focus:ring-2 focus:ring-purple-400 focus:border-transparent shadow-sm placeholder:text-gray-400"
               placeholder="What needs to be done?"
               value={todo}
               onChange={e => setTodo(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') addTodo(); }}
             />
             <Button
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 rounded-r-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="rounded-xl bg-gradient-to-r from-purple-500 to-pink-400 hover:from-purple-600 hover:to-pink-500 text-white font-bold px-4 py-2 shadow-md hover:shadow-lg transition-all duration-200"
               onClick={addTodo}
+              aria-label="Add todo"
             >
-              +
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
             </Button>
           </div>
-          
           <ul className="space-y-3 flex-1">
             {loading ? (
-              <li className="text-center text-gray-500">Loading todos...</li>
+              <li className="text-center text-gray-400">Loading todos...</li>
             ) : todos.length === 0 ? (
-              <li className="text-center text-gray-500">No todos yet. Add one above!</li>
+              <li className="text-center text-gray-400">No todos yet. Add one above!</li>
             ) : (
               todos.map((todoItem) => (
-                <li key={todoItem._id} className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl px-4 py-3 border border-indigo-100 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center flex-1">
-                      <button
-                        onClick={() => toggleTodo(todoItem._id, todoItem.completed)}
-                        className="mr-3 w-5 h-5 border-2 border-gray-300 rounded flex items-center justify-center hover:border-indigo-500 transition-colors"
-                      >
-                        {todoItem.completed && (
-                          <svg className="w-3 h-3 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        )}
-                      </button>
-                      
-                      {editingTodo === todoItem._id ? (
-                        <div className="flex items-center flex-1">
-                          <Input
-                            value={editText}
-                            onChange={(e) => setEditText(e.target.value)}
-                            className="flex-1 mr-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm"
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') saveEdit();
-                              if (e.key === 'Escape') cancelEdit();
-                            }}
-                          />
-                          <button
-                            onClick={saveEdit}
-                            className="text-green-600 hover:text-green-700 p-1 rounded"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={cancelEdit}
-                            className="text-gray-500 hover:text-gray-700 p-1 rounded ml-1"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          </button>
-                        </div>
-                      ) : (
-                        <span className={`flex-1 ${todoItem.completed ? 'line-through text-gray-500' : 'text-gray-700'}`}>
-                          {todoItem.text}
-                        </span>
-                      )}
-                    </div>
-                    
-                    {editingTodo !== todoItem._id && (
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => startEdit(todoItem)}
-                          className="text-orange-500 hover:text-orange-700 p-1 rounded hover:bg-orange-50 transition-colors"
-                          title="Edit"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => deleteTodo(todoItem._id)}
-                          className="text-gray-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors"
-                          title="Delete"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-                        </button>
-                      </div>
+                <li key={todoItem._id} className="flex items-center bg-white/80 rounded-xl px-4 py-3 shadow border border-purple-100/60 hover:shadow-lg transition-all duration-200">
+                  <button
+                    onClick={() => toggleTodo(todoItem._id, todoItem.completed)}
+                    className={`mr-3 w-5 h-5 flex items-center justify-center rounded border-2 ${todoItem.completed ? 'border-purple-400 bg-purple-200' : 'border-gray-300 bg-white'} transition-colors`}
+                    aria-label={todoItem.completed ? 'Mark as incomplete' : 'Mark as complete'}
+                  >
+                    {todoItem.completed && (
+                      <svg className="w-3 h-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
                     )}
-                  </div>
+                  </button>
+                  {editingTodo === todoItem._id ? (
+                    <div className="flex items-center flex-1 gap-2">
+                      <Input
+                        value={editText}
+                        onChange={(e) => setEditText(e.target.value)}
+                        className="flex-1 border-0 rounded-lg bg-purple-50 focus:ring-2 focus:ring-purple-400 focus:border-transparent shadow-sm"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') saveEdit();
+                          if (e.key === 'Escape') cancelEdit();
+                        }}
+                        autoFocus
+                      />
+                      <button
+                        onClick={saveEdit}
+                        className="text-green-600 hover:text-green-700 p-1 rounded"
+                        title="Save"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={cancelEdit}
+                        className="text-gray-400 hover:text-gray-700 p-1 rounded"
+                        title="Cancel"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    <span className={`flex-1 text-base ${todoItem.completed ? 'line-through text-gray-400' : 'text-gray-700'} font-medium`}>{todoItem.text}</span>
+                  )}
+                  {editingTodo !== todoItem._id && (
+                    <div className="flex items-center space-x-1 ml-2">
+                      <button
+                        onClick={() => startEdit(todoItem)}
+                        className="text-purple-400 hover:text-purple-700 p-1 rounded hover:bg-purple-50 transition-colors"
+                        title="Edit"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => deleteTodo(todoItem._id)}
+                        className="text-gray-300 hover:text-pink-500 p-1 rounded hover:bg-pink-50 transition-colors"
+                        title="Delete"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  )}
                 </li>
               ))
             )}
           </ul>
-          
-          {todos.length > 0 && (
-            <div className="mt-4 text-center text-sm text-gray-500">
-              {completedTodos} of {todos.length} tasks done
-            </div>
-          )}
+          <div className="mt-4 text-center text-xs text-purple-500 font-semibold">
+            {todos.length > 0 ? `${completedTodos} of ${todos.length} tasks done` : 'No tasks yet'}
+          </div>
         </div>
       </div>
     </AdminLayout>
