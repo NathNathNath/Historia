@@ -3,19 +3,9 @@ import { useNavigate } from "react-router-dom";
 import AdminLayout from "@/components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-const summaryCards = [
-  { label: "Total Users", value: 14, sub: "Active members", icon: "👥", gradient: "from-blue-500 to-cyan-500" },
-  { label: "Total Subjects", value: 1, sub: "Available courses", icon: "📚", gradient: "from-purple-500 to-pink-500" },
-  { label: "Reports", value: 19, sub: "This month", icon: "📊", gradient: "from-green-500 to-emerald-500" },
-  { label: "Active Students", value: 8, sub: "Learning now", icon: "🎓", gradient: "from-orange-500 to-red-500" },
-];
-
-const recentActivity = [
-  { icon: "👤", text: "New Student Enrolled", time: "2 hours ago", color: "text-blue-600" },
-  { icon: "📚", text: "New Course Added", time: "5 hours ago", color: "text-purple-600" },
-  { icon: "🧑‍🏫", text: "New Teacher Hired", time: "1 day ago", color: "text-green-600" },
-];
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 export default function Dashboard() {
   const [todo, setTodo] = useState("");
@@ -24,6 +14,16 @@ export default function Dashboard() {
   const [editText, setEditText] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [totalUsers, setTotalUsers] = useState<number | null>(null);
+  const [recentActivity, setRecentActivity] = useState([]);
+
+  // summaryCards now inside the component and uses totalUsers state
+  const summaryCards = [
+    { label: "Total Users", value: totalUsers ?? '...', sub: "Active members", icon: "👥", gradient: "from-blue-500 to-cyan-500" },
+    { label: "Total Subjects", value: 1, sub: "Available courses", icon: "📚", gradient: "from-purple-500 to-pink-500" },
+    { label: "Reports", value: 19, sub: "This month", icon: "📊", gradient: "from-green-500 to-emerald-500" },
+    { label: "Active Students", value: 8, sub: "Learning now", icon: "🎓", gradient: "from-orange-500 to-red-500" },
+  ];
 
   // Get user ID from localStorage
   const userId = localStorage.getItem('userId');
@@ -35,6 +35,8 @@ export default function Dashboard() {
       return;
     }
     fetchTodos();
+    fetchTotalUsers();
+    fetchRecentActivity();
   }, [userId, navigate]);
 
   // Fetch todos from API
@@ -51,6 +53,30 @@ export default function Dashboard() {
       console.error('Error fetching todos:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchTotalUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/users/total');
+      if (response.ok) {
+        const data = await response.json();
+        setTotalUsers(data.total);
+      }
+    } catch (error) {
+      console.error('Error fetching total users:', error);
+    }
+  };
+
+  const fetchRecentActivity = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/users/recent-activities');
+      if (response.ok) {
+        const data = await response.json();
+        setRecentActivity(data);
+      }
+    } catch (error) {
+      console.error('Error fetching recent activity:', error);
     }
   };
 
@@ -187,17 +213,21 @@ export default function Dashboard() {
             </h2>
           </div>
           <ul className="space-y-4">
-            {recentActivity.map((act, idx) => (
-              <li key={idx} className="flex items-center p-3 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-md transition-all duration-300">
-                <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mr-4">
-                  <span className="text-xl">{act.icon}</span>
-                </div>
-                <div className="flex-1">
-                  <div className={`font-semibold ${act.color}`}>{act.text}</div>
-                  <div className="text-gray-500 text-sm">{act.time}</div>
-                </div>
-              </li>
-            ))}
+            {recentActivity.length === 0 ? (
+              <li className="text-gray-400">No recent activity.</li>
+            ) : (
+              recentActivity.map((act, idx) => (
+                <li key={idx} className="flex items-center p-3 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-md transition-all duration-300">
+                  <div className="w-10 h-10 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-xl">{act.type === 'student_enrolled' ? '👤' : act.type === 'teacher_hired' ? '🧑‍🏫' : '📚'}</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-blue-600">{act.description}</div>
+                    <div className="text-gray-500 text-sm">{dayjs(act.createdAt).fromNow()}</div>
+                  </div>
+                </li>
+              ))
+            )}
           </ul>
         </div>
 

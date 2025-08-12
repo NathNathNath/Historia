@@ -5,6 +5,7 @@ import cors from 'cors';
 import todosRouter from './routes/todos.js';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
+import subjectsRouter from './routes/subjects.js';
 
 const app = express();
 app.use(cors());
@@ -19,9 +20,11 @@ mongoose.connect(
   console.error('MongoDB connection error:', err);
 });
 
+app.use('/public/assets', express.static('public/assets'));
 app.use('/api/todos', todosRouter);
 app.use('/api', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/subjects', subjectsRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

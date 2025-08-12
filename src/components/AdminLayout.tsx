@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 const navItems = [
   { label: "Dashboard", icon: "📊", path: "/dashboard" },
   { label: "Manage Users", icon: "👥", path: "/users" },
-  { label: "Manage Subjects", icon: "📚", path: "/subjects" },
+  { label: "Manage Subjects", icon: "📚", path: "/manage-subjects" },
   { label: "Upload Lessons", icon: "⬆️", path: "/lessons" },
   { label: "Monitor Activity", icon: "🕵️", path: "/activity" },
   { label: "Analysis", icon: "📈", path: "/analysis" },
@@ -75,15 +75,18 @@ export default function AdminLayout({ children, title }) {
         {/* Main Content */}
         <main className="flex-1 p-8 overflow-auto">
           {/* Top Bar */}
+          {location.pathname === '/dashboard' && (
           <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 mb-8">
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-1">
                   {title}
                 </h1>
-                <p className="text-gray-600">
-                  Welcome back, {localStorage.getItem('userName') || 'Admin'}
-                </p>
+             
+                  <p className="text-gray-600">
+                    Welcome back, {localStorage.getItem('userName') || 'Admin'}
+                  </p>
+           
               </div>
               <div className="flex items-center space-x-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -94,6 +97,7 @@ export default function AdminLayout({ children, title }) {
               </div>
             </div>
           </div>
+               )}
           {children}
         </main>
       </div>

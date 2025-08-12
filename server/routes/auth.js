@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
   // For demo: return user info (never return password in production)
-  res.json({ message: 'Login successful', user: { email: user.email, id: user._id } });
+  res.json({ message: 'Login successful', user: { email: user.email, id: user._id, name: user.name, role: user.role } });
 });
 
 export default router;

@@ -26,10 +26,10 @@ export default function LoginPage() {
       
       // Get user data from response
       const userData = await res.json();
-      
+      console.log("userData", userData);
       // Store user ID and other user data in localStorage
       localStorage.setItem('userId', userData.user.id);
-      localStorage.setItem('userName', userData.name);
+      localStorage.setItem('userName', userData.user.name);
       localStorage.setItem('userEmail', userData.email);
       localStorage.setItem('userRole', userData.role);
       

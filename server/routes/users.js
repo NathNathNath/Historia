@@ -1,12 +1,17 @@
 import express from 'express';
 import User from '../models/User.js';
+import Activity from '../models/Activity.js';
 
 const router = express.Router();
 
-// GET all users
+// GET all users (with optional role filter)
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find();
+    const filter = {};
+    if (req.query.role) {
+      filter.role = new RegExp('^' + req.query.role + '$', 'i'); // case-insensitive
+    }
+    const users = await User.find(filter);
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching users', error: error.message });
@@ -35,6 +40,14 @@ router.post('/', async (req, res) => {
     });
 
     await user.save();
+    // Log activity for new student or teacher
+    if (roleNew === 'Student' || roleNew === 'Teacher') {
+      await Activity.create({
+        type: roleNew === 'Student' ? 'student_enrolled' : 'teacher_hired',
+        description: roleNew === 'Student' ? `New student enrolled: ${name}` : `New teacher hired: ${name}`,
+        user: user._id
+      });
+    }
     const userResponse = user.toObject();
     delete userResponse.password;
     
@@ -87,6 +100,29 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting user', error: error.message });
+  }
+});
+
+// GET total users
+router.get('/total', async (req, res) => {
+  try {
+    const count = await User.countDocuments();
+    res.json({ total: count });
+  } catch (error) {
+    res.status(500).json({ message: 'Error counting users', error: error.message });
+  }
+});
+
+// GET 3 most recent activities
+router.get('/recent-activities', async (req, res) => {
+  try {
+    const activities = await Activity.find({})
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .populate('user', 'name role');
+    res.json(activities);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching recent activities', error: error.message });
   }
 });
 

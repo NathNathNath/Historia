@@ -7,6 +7,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import ManageUsers from './pages/ManageUsers';
+import ManageSubjects from './pages/ManageSubjects';
 import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users" element={<ManageUsers />} />
+          <Route path="/manage-subjects" element={<ManageSubjects />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
