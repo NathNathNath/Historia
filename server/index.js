@@ -6,6 +6,7 @@ import todosRouter from './routes/todos.js';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
 import subjectsRouter from './routes/subjects.js';
+import lessonsRouter from './routes/lessons.js';
 
 const app = express();
 app.use(cors());
@@ -25,6 +26,7 @@ app.use('/api/todos', todosRouter);
 app.use('/api', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/subjects', subjectsRouter);
+app.use('/api/lessons', lessonsRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

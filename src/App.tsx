@@ -8,7 +8,10 @@ import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import ManageUsers from './pages/ManageUsers';
 import ManageSubjects from './pages/ManageSubjects';
+import UploadLessons from './pages/UploadLessons';
+import MonitorActivity from './pages/MonitorActivity';
 import NotFound from './pages/NotFound';
+import AdminLayout from './components/AdminLayout';
 
 const queryClient = new QueryClient();
 
@@ -24,6 +27,8 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users" element={<ManageUsers />} />
           <Route path="/manage-subjects" element={<ManageSubjects />} />
+          <Route path="/lessons" element={<UploadLessons />} />
+          <Route path="/monitor-activity" element={<MonitorActivity />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
