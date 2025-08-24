@@ -10,8 +10,16 @@ import ManageUsers from './pages/ManageUsers';
 import ManageSubjects from './pages/ManageSubjects';
 import UploadLessons from './pages/UploadLessons';
 import MonitorActivity from './pages/MonitorActivity';
+import TeacherDashboard from './pages/TeacherDashboard';
+import StudentArea from './pages/StudentArea';
+import ManageActivity from './pages/ManageActivity';
+import MyLesson from './pages/MyLesson';
+import DataAnalytics from './pages/DataAnalytics';
+import Badges from './pages/Badges';
+import Calendar from './pages/Calendar';
 import NotFound from './pages/NotFound';
 import AdminLayout from './components/AdminLayout';
+import TeacherLayout from './components/TeacherLayout';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +37,13 @@ const App = () => (
           <Route path="/manage-subjects" element={<ManageSubjects />} />
           <Route path="/lessons" element={<UploadLessons />} />
           <Route path="/monitor-activity" element={<MonitorActivity />} />
+          <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+          <Route path="/student-area" element={<StudentArea />} />
+          <Route path="/manage-activity" element={<ManageActivity />} />
+          <Route path="/my-lesson" element={<MyLesson />} />
+          <Route path="/data-analytics" element={<DataAnalytics />} />
+          <Route path="/badges" element={<Badges />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

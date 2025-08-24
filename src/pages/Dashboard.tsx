@@ -34,6 +34,14 @@ export default function Dashboard() {
       navigate('/');
       return;
     }
+
+    // Check user role and redirect if Teacher
+    const userRole = localStorage.getItem('userRole');
+    if (userRole === 'Teacher') {
+      navigate('/teacher-dashboard');
+      return;
+    }
+
     fetchTodos();
     fetchTotalUsers();
     fetchRecentActivity();
@@ -198,9 +206,9 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Activity and Todo */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Recent Activity */}
+  {/* Activity and Todo */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+  {/* Recent Activity */}
         <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 p-6">
           <div className="flex items-center mb-6">
             <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center mr-3">
@@ -230,6 +238,7 @@ export default function Dashboard() {
             )}
           </ul>
         </div>
+
 
         {/* Todolist */}
         <div className="rounded-2xl p-6 flex flex-col shadow-xl bg-gradient-to-br from-purple-100 via-indigo-100 to-pink-100 border border-purple-200/40 relative">

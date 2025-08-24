@@ -30,8 +30,8 @@ export default function LoginPage() {
       // Store user ID and other user data in localStorage
       localStorage.setItem('userId', userData.user.id);
       localStorage.setItem('userName', userData.user.name);
-      localStorage.setItem('userEmail', userData.email);
-      localStorage.setItem('userRole', userData.role);
+      localStorage.setItem('userEmail', userData.user.email);
+      localStorage.setItem('userRole', userData.user.role);
       
       // Success
       navigate("/dashboard");

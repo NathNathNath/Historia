@@ -2,11 +2,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
+
 import todosRouter from './routes/todos.js';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
 import subjectsRouter from './routes/subjects.js';
 import lessonsRouter from './routes/lessons.js';
+import schedulesRouter from './routes/schedules.js';
 
 const app = express();
 app.use(cors());
@@ -22,11 +24,13 @@ mongoose.connect(
 });
 
 app.use('/public/assets', express.static('public/assets'));
+
 app.use('/api/todos', todosRouter);
 app.use('/api', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/subjects', subjectsRouter);
 app.use('/api/lessons', lessonsRouter);
+app.use('/api/schedules', schedulesRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
